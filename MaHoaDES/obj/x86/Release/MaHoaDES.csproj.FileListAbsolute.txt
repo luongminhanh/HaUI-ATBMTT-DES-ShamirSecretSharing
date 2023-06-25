@@ -1,0 +1,21 @@
+C:\Users\HOANGPHUC\SkyDrive\My Works\DES\Chuong Trinh\MaHoaDES\MaHoaDES\bin\Release\MaHoaDES.exe
+C:\Users\HOANGPHUC\SkyDrive\My Works\DES\Chuong Trinh\MaHoaDES\MaHoaDES\bin\Release\MaHoaDES.pdb
+C:\Users\HOANGPHUC\SkyDrive\My Works\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Users\HOANGPHUC\SkyDrive\My Works\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.BieuMau.frmMaHoaDES.resources
+C:\Users\HOANGPHUC\SkyDrive\My Works\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.Properties.Resources.resources
+C:\Users\HOANGPHUC\SkyDrive\My Works\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\GenerateResource.read.1.tlog
+C:\Users\HOANGPHUC\SkyDrive\My Works\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\GenerateResource.write.1.tlog
+C:\Users\HOANGPHUC\SkyDrive\My Works\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.exe
+C:\Users\HOANGPHUC\SkyDrive\My Works\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.pdb
+C:\Users\HOANGPHUC\SkyDrive\My Works\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.BieuMau.frmTienTrinh.resources
+C:\Users\ACER\Desktop\Chuong Trinh\DES 2\DES\Chuong Trinh\MaHoaDES\MaHoaDES\bin\Release\MaHoaDES.exe
+C:\Users\ACER\Desktop\Chuong Trinh\DES 2\DES\Chuong Trinh\MaHoaDES\MaHoaDES\bin\Release\MaHoaDES.pdb
+C:\Users\ACER\Desktop\Chuong Trinh\DES 2\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.csproj.AssemblyReference.cache
+C:\Users\ACER\Desktop\Chuong Trinh\DES 2\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.BieuMau.frmMaHoaDES.resources
+C:\Users\ACER\Desktop\Chuong Trinh\DES 2\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.BieuMau.frmTienTrinh.resources
+C:\Users\ACER\Desktop\Chuong Trinh\DES 2\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.Properties.Resources.resources
+C:\Users\ACER\Desktop\Chuong Trinh\DES 2\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.csproj.GenerateResource.cache
+C:\Users\ACER\Desktop\Chuong Trinh\DES 2\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.csproj.CoreCompileInputs.cache
+C:\Users\ACER\Desktop\Chuong Trinh\DES 2\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.exe
+C:\Users\ACER\Desktop\Chuong Trinh\DES 2\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.pdb
+C:\Users\ACER\Desktop\Chuong Trinh\DES 2\DES\Chuong Trinh\MaHoaDES\MaHoaDES\obj\x86\Release\MaHoaDES.csproj.ResolveComReference.cache
