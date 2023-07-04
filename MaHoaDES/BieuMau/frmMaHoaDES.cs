@@ -22,6 +22,9 @@ using Font = DocumentFormat.OpenXml.Wordprocessing.Font;
 using SecretSharingDotNet.Cryptography;
 using SecretSharingDotNet.Math;
 using System.Numerics;
+using Microsoft.Office.Interop.Word;
+using Xceed.Document.NET;
+
 
 
 
@@ -71,85 +74,16 @@ namespace MaHoaDES.BieuMau
                     filepath = path;
                     MessageBox.Show("Đã mở file word" + filepath);
                     //
-                    FileHayChuoi = true;
-                  
-                            using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(path, false))
-                            {
-                        Body body = wordDocument.MainDocumentPart.Document.Body;
-                        string text = body.InnerText;
-
-                        // Lấy tất cả các đối tượng Run trong phần Body của tài liệu Word
-                        var runs = body.Descendants<Run>();
-
-                        // Hiển thị nội dung văn bản giống như trong file Word, bao gồm định dạng văn bản
-                        foreach (var run in runs)
-                        {
-                            string runText = run.InnerText;
-                            var runProperties = run.RunProperties;
-
-                            // Tạo một đối tượng Font để lưu trữ các thuộc tính font chữ
-                            Font font = new Font();
-
-                            // Nếu đối tượng Run có thuộc tính Bold, đặt thuộc tính Bold của Font thành true
-                            if (runProperties.Bold != null)
-                            {
-                                // Đối tượng Run được định dạng in đậm
-                                txtVanBanNguon.SelectionFont = new System.Drawing.Font(txtVanBanNguon.Font, FontStyle.Bold);
-                            }
-                            else
-                            {
-                                // Đối tượng Run không được định dạng in đậm
-                                txtVanBanNguon.SelectionFont = new System.Drawing.Font(txtVanBanNguon.Font, FontStyle.Regular);
-                            }
-
-
-                            // Nếu đối tượng Run có thuộc tính Italic, đặt thuộc tính Italic của Font thành true
-                            if (runProperties.Italic != null)
-                            {
-                                txtVanBanNguon.SelectionFont = new System.Drawing.Font(txtVanBanNguon.Font, FontStyle.Italic);
-                            }
-                            else
-                            {
-                                txtVanBanNguon.SelectionFont = new System.Drawing.Font(txtVanBanNguon.Font, FontStyle.Regular);
-                            } 
-                            
-
-                            // Nếu đối tượng Run có thuộc tính Underline, đặt thuộc tính Underline của Font thành true
-                            if (runProperties.Underline != null && runProperties.Underline.Val != null)
-                            {
-                                txtVanBanNguon.SelectionFont = new System.Drawing.Font(txtVanBanNguon.Font, FontStyle.Underline);
-                            }
-
-                            // Nếu đối tượng Run có thuộc tính Color, đặt thuộc tính Color của Font thành màu chữ được định nghĩa trong tài liệu Word
-                            if (runProperties.Color != null)
-                            {
-                                string colorValue = runProperties.Color.Val.Value;
-                                System.Drawing.Color color = System.Drawing.ColorTranslator.FromHtml("#" + colorValue);
-                                txtVanBanNguon.SelectionColor = color;
-                            }
-
-                            // Highlight
-                            if (runProperties.Shading != null && runProperties.Shading.Fill != null)
-                            {
-                                string shadingValue = runProperties.Shading.Fill.Value;
-                                System.Drawing.Color shadingColor = System.Drawing.ColorTranslator.FromHtml("#" + shadingValue);
-                                txtVanBanNguon.SelectionBackColor = shadingColor;
-                            }
-
-                            // Kích thước font chữ
-                            if (runProperties.FontSize != null)
-                            {
-                                string fontSizeValue = runProperties.FontSize.Val.Value;
-                                double fontSizeInPoints = double.Parse(fontSizeValue) / 2;
-                                txtVanBanNguon.SelectionFont = new System.Drawing.Font(txtVanBanNguon.Font.FontFamily, (float)fontSizeInPoints);
-                            }
-                            // Thêm văn bản và định dạng của nó vào điều khiển RichTextBox
-                           
-                            txtVanBanNguon.AppendText(runText);
-                        }
+                   /* FileHayChuoi = true;
+                    using (var doc = WordprocessingDocument.Open(@"C:\path\to\document.docx", false))
+                    {
+                        var converter = new WmlToRtfConverter();
+                        var rtf = converter.Convert(doc.MainDocumentPart.Document);
+                        txtVanBanNguon.Rtf = rtf;
                     }
-                        
+                   */
                 }
+
                 else
                 {
                     MessageBox.Show("Mở file txt");
@@ -507,6 +441,43 @@ namespace MaHoaDES.BieuMau
 
         }
 
+        private int modInverse(int a, int m)
+        {
+            int y = 0, x = 1, m0 = m;
+            while (a > 1)
+            {
+                int q = a / m;
+                int t = m;
+                m = a % m;
+                a = t;
+                t = y;
+                y = x - q * y;
+                x = t;
+            }
+            if (x < 0) x += m0;
+            return x;
+        }
+
+        static Boolean isPrimeNumber(int n)
+        {
+            // so nguyen n < 2 khong phai la so nguyen to
+            if (n < 2)
+            {
+                return false;
+            }
+            // check so nguyen to khi n >= 2
+            int squareRoot = (int)Math.Sqrt(n);
+            int i;
+            for (i = 2; i <= squareRoot; i++)
+            {
+                if (n % i == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private void btnShareKey_Click_1(object sender, EventArgs e)
         {
             dgvKey.Rows.Clear();
@@ -545,11 +516,9 @@ namespace MaHoaDES.BieuMau
                 for (int j = 0; j < minKey - 1; j++)
                 {
                     h = BigInteger.Pow(x[i], j+1);
-                    l += a[j] * h;
-                    //MessageBox.Show("l = " + l.ToString());
+                    l += (a[j] * h);
                 }
                 BigInteger yShare = secretKey + l;
-                //MessageBox.Show("yShare = " + yShare.ToString());
 
                 // Thêm phần tử tính được vào cặp khóa
                 y[i] = yShare;
@@ -624,7 +593,7 @@ namespace MaHoaDES.BieuMau
             }
             else
             {
-                float k1 = 0;
+                double k1 = 0;
                 for (int l = 0; l < minKey; l++)
                 {
                     float m = 1;
@@ -639,148 +608,10 @@ namespace MaHoaDES.BieuMau
                     }
                     k1 += y[l] * m;
                 }
+                k1 = Math.Round(k1);
                 txtRecoveryKey.Text = "Khóa khôi phục được là " + k1.ToString();
             }
 
         }
-
-
-
-        /*
-        private void frmMaHoaDES_Load(object sender, EventArgs e)
-        {
-            // Set AutoSizeMode of each column to None
-            foreach (DataGridViewColumn column in dataGridView1.Columns)
-            {
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            }
-
-            // Set AutoSizeMode of all columns to Fill
-            foreach (DataGridViewColumn column in dataGridView1.Columns)
-            {
-                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            }
-            update();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            //dataGridView1.Columns[0].DefaultCellStyle.Format = "F0";
-            dataGridView1.Columns[0].ValueType = typeof(double);
-            //dataGridView1.Columns[1].DefaultCellStyle.Format = "F0";
-            dataGridView1.Columns[1].ValueType = typeof(double);
-
-            double s = double.Parse(txtKhoaBiMat.Text);
-            double p = double.Parse(txtSNT.Text);
-            //double a1 = double.Parse(txtA1.Text);
-            //double a2 = double.Parse(txtA2.Text);
-            double x1 = double.Parse(dataGridView1.Rows[0].Cells[0].Value.ToString());
-            double x2 = double.Parse(dataGridView1.Rows[1].Cells[0].Value.ToString());
-            double x3 = double.Parse(dataGridView1.Rows[2].Cells[0].Value.ToString());
-            double x4 = double.Parse(dataGridView1.Rows[3].Cells[0].Value.ToString());
-            double x5 = double.Parse(dataGridView1.Rows[4].Cells[0].Value.ToString());
-
-            Random rand = new Random();
-            int a1 = rand.Next(1, (int)p);
-            int a2 = rand.Next(1, (int)p);
-            double s1, s2, s3, s4, s5; //Các mảnh chia cho mỗi thành viên
-
-            // Mảnh 1                  
-            s1 = (s + a1 * x1 + a2 * Math.Pow(x1, 2));
-
-            // Mảnh 2                  
-            s2 = (s + a1 * x2 + a2 * Math.Pow(x2, 2));
-
-            // Mảnh 3                  
-            s3 = (s + a1 * x3 + a2 * Math.Pow(x3, 2));
-
-            // Mảnh 4                 
-            s4 = (s + a1 * x4 + a2 * Math.Pow(x4, 2));
-
-            // Mảnh 5                 
-            s5 = (s + a1 * x5 + a2 * Math.Pow(x5, 2));
-
-            dataGridView1.Rows[0].Cells[1].Value = s1;
-            dataGridView1.Rows[1].Cells[1].Value = s2;
-            dataGridView1.Rows[2].Cells[1].Value = s3;
-            dataGridView1.Rows[3].Cells[1].Value = s4;
-            dataGridView1.Rows[4].Cells[1].Value = s5;
-
-
-            dataGridView2.Rows[0].Cells[2].Value = s1;
-            dataGridView2.Rows[1].Cells[2].Value = s2;
-            dataGridView2.Rows[2].Cells[2].Value = s3;
-            dataGridView2.Rows[3].Cells[2].Value = s4;
-            dataGridView2.Rows[4].Cells[2].Value = s5;
-
-            dataGridView2.Rows[0].Cells[1].Value = x1;
-            dataGridView2.Rows[1].Cells[1].Value = x2;
-            dataGridView2.Rows[2].Cells[1].Value = x3;
-            dataGridView2.Rows[3].Cells[1].Value = x4;
-            dataGridView2.Rows[4].Cells[1].Value = x5;
-
-        }
-
-        private void frmMaHoaDES_Load_1(object sender, EventArgs e)
-        {
-            update();
-        }
-        public void update()
-        {
-            DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn();
-            chk.HeaderText = "Lựa chọn";
-            chk.Name = "CheckBox";
-            dataGridView2.Columns.Insert(0, chk);
-        }
-        private void dataGridView2_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
-        {
-            foreach (DataGridViewRow row in dataGridView2.Rows)
-            {
-                if (row.Cells[0].GetType() == typeof(DataGridViewCheckBoxCell))
-                {
-                    DataGridViewCheckBoxCell checkBoxCell = (DataGridViewCheckBoxCell)row.Cells[0];
-                    checkBoxCell.Value = true;
-                }
-            }
-        }
-
-        
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            List<string> values = new List<string>();
-            List<double> manhKhoa = new List<double>();
-            List<double> giaTri = new List<double>();
-            List<double> lagrange = new List<double>();
-
-            // Duyệt qua tất cả các dòng của DataGridView
-            int k = 0;
-            foreach (DataGridViewRow row in dataGridView2.Rows)
-            {
-                // Lấy giá trị của ô checkbox tại cột đầu tiên
-                DataGridViewCheckBoxCell chk1 = (DataGridViewCheckBoxCell)row.Cells[0];
-
-                // Nếu giá trị của ô checkbox là true, lấy giá trị của ô tương ứng tại cột thứ 2 và lưu vào mảng
-                if (chk1?.Value != null && (bool)chk1.Value == true)
-                {
-                    string value = dataGridView2.Rows[k].Cells[2].Value.ToString();
-                    manhKhoa.Add(double.Parse(value));
-                    //values.Add(value);
-                    string value2 = dataGridView2.Rows[k].Cells[1].Value.ToString();
-                    giaTri.Add(double.Parse(value2));
-                }
-                k++;
-            }
-
-            lagrange.Add((giaTri[1] / (giaTri[1] - giaTri[0])) * (giaTri[2] / (giaTri[2] - giaTri[0])));
-            lagrange.Add((giaTri[0] / (giaTri[0] - giaTri[1])) * (giaTri[2] / (giaTri[2] - giaTri[1])));
-            lagrange.Add((giaTri[0] / (giaTri[0] - giaTri[2])) * (giaTri[1] / (giaTri[1] - giaTri[2])));
-
-
-            double KhoaGoc = manhKhoa[0] * lagrange[0] + manhKhoa[1] * lagrange[1] + manhKhoa[2] * lagrange[2];
-
-            richTextBox1.Text = "Khóa khôi phục được là: " + KhoaGoc.ToString();
-        }
-        */
     }
 }
